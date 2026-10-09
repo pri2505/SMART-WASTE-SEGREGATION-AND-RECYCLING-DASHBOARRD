@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Municipal waste segregation and recycling monitoring dashboard." />
+  <title>WasteOps | Smart Waste Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">♻</div><div><strong>WasteOps</strong><small>Municipal Dashboard</small></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <a class="nav-link active" href="#overview"><span>▦</span> Overview</a>
+        <a class="nav-link" href="#bins"><span>▤</span> Smart Bins</a>
+        <a class="nav-link" href="#analytics"><span>◔</span> Segregation Analytics</a>
+        <a class="nav-link" href="#collections"><span>↗</span> Collection Planning</a>
+        <a class="nav-link" href="#reports"><span>▧</span> Reports</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div><div><strong>System operational</strong><small>Last sync: just now</small></div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+        <div class="crumb">Workspace <span>/</span> <strong>Overview</strong></div>
+        <div class="top-actions"><span class="live-pill"><i></i> Live monitoring</span><div class="avatar">MO</div></div>
+      </header>
+
+      <section class="page-heading">
+        <div><p class="eyebrow">MUNICIPAL OPERATIONS</p><h1>Waste Management Overview</h1><p class="subheading">Monitor bin capacity, collection priorities, and recycling performance.</p></div>
+        <button class="primary-btn" id="reportBtn">⇩ Export report</button>
+      </section>
+
+      <section class="stat-grid" aria-label="Key metrics">
+        <article class="stat-card"><div class="stat-top"><span>Total monitored bins</span><span class="stat-icon blue">▤</span></div><div class="stat-value" id="totalBins">248</div><div class="stat-foot"><span class="positive">↑ 12</span> compared with last month</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Bins needing collection</span><span class="stat-icon orange">⚠</span></div><div class="stat-value" id="urgentBins">18</div><div class="stat-foot"><span class="warning-text">7 critical</span> above 90% capacity</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Waste collected today</span><span class="stat-icon green">♻</span></div><div class="stat-value">6.42 <small>tons</small></div><div class="stat-foot"><span class="positive">↑ 8.4%</span> versus daily average</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Recycling efficiency</span><span class="stat-icon purple">◉</span></div><div class="stat-value">76.8<span class="unit">%</span></div><div class="progress"><span style="width:76.8%"></span></div><div class="stat-foot">Target: 85%</div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel capacity-panel" id="analytics">
+          <div class="panel-heading"><div><h2>Waste category breakdown</h2><p>Collected waste by category this week</p></div><select id="periodSelect" aria-label="Select period"><option value="week">This week</option><option value="month">This month</option></select></div>
+          <div class="chart-wrap"><div class="donut" id="donut"><div class="donut-center"><strong>6.42t</strong><span>Total collected</span></div></div>
+            <div class="legend">
+              <div><i class="legend-dot organic"></i><span>Organic</span><strong id="organicValue">42%</strong></div>
+              <div><i class="legend-dot recyclable"></i><span>Recyclable</span><strong id="recyclableValue">31%</strong></div>
+              <div><i class="legend-dot general"></i><span>General</span><strong id="generalValue">19%</strong></div>
+              <div><i class="legend-dot hazardous"></i><span>Hazardous</span><strong id="hazardousValue">8%</strong></div>
+            </div>
+          </div>
+        </article>
+        <article class="panel alert-panel">
+          <div class="panel-heading"><div><h2>Priority alerts</h2><p>Bins requiring attention</p></div><span class="count-badge">3 urgent</span></div>
+          <div class="alert-list">
+            <div class="alert-item"><div class="alert-symbol red">!</div><div class="alert-info"><strong>BIN-104 · Central Market</strong><p>Capacity reached 98%</p><small>4 min ago</small></div><span class="priority high">Critical</span></div>
+            <div class="alert-item"><div class="alert-symbol orange">!</div><div class="alert-info"><strong>BIN-087 · Bus Terminal</strong><p>Capacity reached 92%</p><small>12 min ago</small></div><span class="priority medium">High</span></div>
+            <div class="alert-item"><div class="alert-symbol orange">!</div><div class="alert-info"><strong>BIN-216 · Lake Road</strong><p>Capacity reached 89%</p><small>19 min ago</small></div><span class="priority medium">High</span></div>
+          </div>
+          <button class="text-btn" id="viewBinsBtn">View all alerts <span>→</span></button>
+        </article>
+      </section>
+
+      <section class="panel bins-panel" id="bins">
+        <div class="panel-heading bins-heading"><div><h2>Smart bin status</h2><p>Live fill levels and collection priorities</p></div><div class="table-actions"><input id="searchInput" type="search" placeholder="Search bin or location…" aria-label="Search bins" /><select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="Critical">Critical</option><option value="Needs pickup">Needs pickup</option><option value="Normal">Normal</option></select></div></div>
+        <div class="table-scroll"><table><thead><tr><th>BIN ID</th><th>LOCATION</th><th>WASTE TYPE</th><th>FILL LEVEL</th><th>STATUS</th><th>LAST UPDATED</th></tr></thead><tbody id="binRows"></tbody></table></div>
+        <div class="table-footer"><span id="rowCount">Showing 6 bins</span><span>Sensor data refreshes automatically in a live deployment</span></div>
+      </section>
+
+      <section class="bottom-grid" id="collections">
+        <article class="panel collection-panel"><div class="panel-heading"><div><h2>Collection planning</h2><p>Suggested pickup order based on fill level</p></div><span class="mini-tag">Today</span></div><div class="route-step"><span class="route-number">1</span><div><strong>Central Market</strong><small>BIN-104 · 98% full</small></div><span class="route-time">Priority 1</span></div><div class="route-step"><span class="route-number">2</span><div><strong>Bus Terminal</strong><small>BIN-087 · 92% full</small></div><span class="route-time">Priority 2</span></div><div class="route-step"><span class="route-number">3</span><div><strong>Lake Road</strong><small>BIN-216 · 89% full</small></div><span class="route-time">Priority 3</span></div><p class="note">Demo recommendation only. Connect GPS and route data for real route optimisation.</p></article>
+        <article class="panel impact-panel" id="reports"><div class="panel-heading"><div><h2>Environmental impact</h2><p>Estimated impact this month</p></div><span class="impact-icon">🌱</span></div><div class="impact-stat"><strong>2.8 t</strong><span>recyclable material diverted from landfill</span></div><div class="impact-stat"><strong>1.6 t</strong><span>estimated CO₂ equivalent avoided</span></div><div class="impact-footer">Illustrative dashboard metrics · replace with verified plant data</div></article>
+      </section>
+      <footer>WasteOps Dashboard <span>•</span> Prototype for municipal waste monitoring</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
